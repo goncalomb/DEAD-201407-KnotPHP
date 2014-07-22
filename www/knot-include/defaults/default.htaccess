@@ -1,0 +1,35 @@
+ServerSignature Off
+DirectoryIndex index.php
+DirectorySlash On
+AcceptPathInfo Off
+RewriteEngine On
+Options -Multiviews -Indexes -Includes -ExecCGI +FollowSymLinks
+
+ErrorDocument 400 /
+ErrorDocument 403 /
+ErrorDocument 404 /
+ErrorDocument 500 /
+ErrorDocument 503 /
+
+AddDefaultCharset utf-8
+AddCharset utf-8 .js
+AddCharset utf-8 .css
+
+<IfModule !mod_suphp.c>
+php_value html_errors 0
+php_value display_startup_errors 0
+php_value display_errors 1
+php_value max_execution_time 10
+php_value include_path "{KNOT_ROOT_DIR}"
+php_value auto_prepend_file "knot-include/prepend.php"
+php_value date.timezone "UTC"
+</IfModule>
+
+<IfModule mod_suphp.c>
+suPHP_ConfigPath {KNOT_ROOT_DIR}/knot-content
+</IfModule>
+
+RewriteCond %{ENV:REDIRECT_STATUS} !^.
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^.? index.php [L]

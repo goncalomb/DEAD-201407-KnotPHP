@@ -1,0 +1,9 @@
+ServerSignature Off
+DirectoryIndex index.php
+DirectorySlash On
+AcceptPathInfo Off
+RewriteEngine On
+Options -Multiviews -Indexes -Includes -ExecCGI +FollowSymLinks
+
+RewriteCond %{ENV:REDIRECT_STATUS} !^.
+RewriteRule ^.? index.php [L]
