@@ -89,8 +89,13 @@ final class KnotPage {
 		return self::$_page;
 	}
 
-	public static function end() {
+	public static function end($abort=false) {
 		if (!self::$_page || self::$_state) {
+			return;
+		} else if ($abort) {
+			ob_end_clean();
+			self::$_page = null;
+			self::$_state = true;
 			return;
 		}
 		self::append('main', ob_get_clean());

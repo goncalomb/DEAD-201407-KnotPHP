@@ -12,7 +12,7 @@ final class KnotErrorHandling {
 
 	private static $_phpErrorConstants = null;
 
-	private static function _getErrorConstant($value) {
+	private static function _getErrorConstant($type) {
 		if (static::$_phpErrorConstants === null) {
 			static::$_phpErrorConstants = array();
 			foreach (get_defined_constants(true)['Core'] as $name => $value) {
@@ -21,7 +21,7 @@ final class KnotErrorHandling {
 				}
 			}
 		}
-		return (isset(static::$_phpErrorConstants[$value]) ? static::$_phpErrorConstants[$value] : 'E_UNKNOWN');
+		return (isset(static::$_phpErrorConstants[$type]) ? static::$_phpErrorConstants[$type] : 'E_UNKNOWN');
 	}
 
 	public static function internal_handleError($type, $message, $file, $line) {
@@ -44,6 +44,9 @@ final class KnotErrorHandling {
 		$code = (int) $code;
 		if (!isset(self::$_htmlErrors[$code])) {
 			$code = 500;
+		}
+		if (class_exists('KnotPage')) {
+			KnotPage::end(true);
 		}
 		while (ob_get_level()) {
 			ob_end_clean();
