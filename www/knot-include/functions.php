@@ -14,4 +14,8 @@ function knot_forbidden_path($path) {
 	}
 }
 
+function knot_require_file($file) {
+	return require $file;
+}
+
 ?>

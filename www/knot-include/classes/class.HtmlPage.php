@@ -5,6 +5,7 @@ class HtmlElement {
 	private $_tag;
 	private $_html = array();
 	private $_attributes = array();
+	private $_used = false;
 
 	public function __construct($tag) {
 		$this->_tag = $tag;
@@ -21,6 +22,12 @@ class HtmlElement {
 	public function append() {
 		$args = func_get_args();
 		foreach ($args as $arg) {
+			if ($arg instanceof HtmlElement) {
+				if ($arg->_used) {
+					continue;
+				}
+				$arg->_used = true;
+			}
 			$this->_html[] = $arg;
 		}
 	}

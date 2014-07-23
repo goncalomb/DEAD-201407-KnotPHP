@@ -10,6 +10,8 @@ define('KNOT_INCLUDE_DIR', KNOT_ROOT_DIR . DIRECTORY_SEPARATOR . 'knot-include')
 define('KNOT_CONTENT_DIR', KNOT_ROOT_DIR . DIRECTORY_SEPARATOR . 'knot-content');
 define('KNOT_TMP_DIR', KNOT_ROOT_DIR . DIRECTORY_SEPARATOR . 'knot-tmp');
 
+define('KNOT_THEMES_DIR', KNOT_CONTENT_DIR . DIRECTORY_SEPARATOR . 'themes');
+
 define('KNOT_VERSION', 'alpha');
 define('KNOT_DEBUG', $_SERVER['HTTP_HOST'] == 'localhost');
 
@@ -34,6 +36,8 @@ knot_forbidden_path(KNOT_CONTENT_DIR);
 
 knot_ensure_path(KNOT_TMP_DIR);
 knot_forbidden_path(KNOT_TMP_DIR);
+
+knot_ensure_path(KNOT_THEMES_DIR);
 
 header_remove();
 

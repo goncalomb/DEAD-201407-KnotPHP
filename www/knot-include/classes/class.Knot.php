@@ -15,8 +15,8 @@ final class Knot {
 		}
 	}
 
-	public static function config($key) {
-		return (self::$_config !== null && isset(self::$_config[$key]) ? self::$_config[$key] : null);
+	public static function config($key, $default=null) {
+		return (self::$_config !== null && !empty(self::$_config[$key]) ? self::$_config[$key] : $default);
 	}
 
 	private function __construct() { }

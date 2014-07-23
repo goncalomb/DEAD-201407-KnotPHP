@@ -1,5 +1,5 @@
 <?php
 
-$knot_config['bla'] = 'blablabla';
+$knot_config['theme'] = 'default';
 
 ?>
