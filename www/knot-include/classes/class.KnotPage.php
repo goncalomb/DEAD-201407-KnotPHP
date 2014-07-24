@@ -5,6 +5,7 @@ final class KnotPage {
 	private static $_page;
 	private static $_state;
 	private static $_zones = array();
+	private static $_replaceChars = array("\t", "\r", "\n");
 
 	public static function start($theme=true) {
 		if (self::$_page) {
@@ -43,16 +44,35 @@ final class KnotPage {
 		}
 	}
 
+	public static function replaceChars($chars) {
+		self::flushBuffer();
+		if (empty($chars)) {
+			self::$_replaceChars = null;
+		} else if ($chars === true) {
+			self::$_replaceChars = array("\t", "\r", "\n");
+		} else {
+			self::$_replaceChars = str_split($chars);
+		}
+	}
+
 	public static function append($zone_name) {
 		if (self::$_page && isset(self::$_zones[$zone_name])) {
 			self::flushBuffer();
-			call_user_func_array(array(self::$_zones[$zone_name], 'append'), array_slice(func_get_args(), 1));
+			$data = array_slice(func_get_args(), 1);
+			if (self::$_replaceChars) {
+				foreach ($data as &$value) {
+					if (!($value instanceof HtmlElement)) {
+						$value = str_replace(self::$_replaceChars, '', $value);
+					}
+				}
+			}
+			call_user_func_array(array(self::$_zones[$zone_name], 'append'), $data);
 		}
 	}
 
 	public static function flushBuffer() {
 		if (self::$_page && ob_get_length()) {
-			if (self::$_state === null) {
+			if (self::$_state === null || !isset(self::$_zones['main'])) {
 				self::append('body', ob_get_clean());
 			} else {
 				self::append('main', ob_get_clean());
@@ -98,8 +118,13 @@ final class KnotPage {
 			self::$_state = true;
 			return;
 		}
-		self::append('main', ob_get_clean());
+		if (isset(self::$_zones['main'])) {
+			self::append('main', ob_get_clean());
+		} else {
+			self::append('body', ob_get_clean());
+		}
 		self::$_page->output();
+		echo '<!-- ~', floor((microtime(true) - KNOT_MICROTIME)*100000)/100, "ms -->\n";
 		self::$_state = true;
 	}
 
