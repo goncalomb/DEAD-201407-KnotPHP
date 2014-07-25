@@ -30,6 +30,11 @@ suPHP_ConfigPath {KNOT_ROOT_DIR}/knot-content
 </IfModule>
 
 RewriteCond %{ENV:REDIRECT_STATUS} !^.
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} (.*/)index.php$
+RewriteRule ^.? %1 [R=301,L]
+
+RewriteCond %{ENV:REDIRECT_STATUS} !^.
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^.? index.php [L]

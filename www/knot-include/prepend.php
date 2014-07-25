@@ -17,8 +17,17 @@ define('KNOT_VERSION', 'alpha');
 define('KNOT_DEBUG', $_SERVER['HTTP_HOST'] == 'localhost');
 
 $i = strpos($_SERVER['REQUEST_URI'], '?');
-define('KNOT_REQUEST_URI', urldecode($i === false ? $_SERVER['REQUEST_URI'] : substr($_SERVER['REQUEST_URI'], 0, $i)));
+define('KNOT_REQUEST_URI', ($i === false ? $_SERVER['REQUEST_URI'] : substr($_SERVER['REQUEST_URI'], 0, $i)));
+define('KNOT_REQUEST_QUERY', ($i === false ? '' : substr($_SERVER['REQUEST_URI'], $i)));
 unset($i);
+
+$new_uri = preg_replace('/\/{2,}/', '/', KNOT_REQUEST_URI);
+if ($new_uri && $new_uri != KNOT_REQUEST_URI) {
+	header_remove();
+	header('Location: ' . $new_uri . KNOT_REQUEST_QUERY, true, 301);
+	exit();
+}
+unset($new_uri);
 
 set_include_path(KNOT_ROOT_DIR);
 
