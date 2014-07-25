@@ -18,6 +18,10 @@ function knot_require_file($file) {
 	return require $file;
 }
 
+function knot_random_id($length=20) {
+	return bin2hex(openssl_random_pseudo_bytes($length));
+}
+
 function knot_unlink_recursive($path) {
 	if (is_dir($path)) {
 		$handle = opendir($path);

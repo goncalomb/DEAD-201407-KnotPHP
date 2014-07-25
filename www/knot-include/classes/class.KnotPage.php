@@ -20,6 +20,8 @@ final class KnotPage {
 			$theme = null;
 		} else if ($theme == 'default') {
 			$theme_folder = KNOT_INCLUDE_DIR . '/defaults/theme';
+		} else if ($theme == 'default-admin') {
+			$theme_folder = KNOT_INCLUDE_DIR . '/defaults/theme-admin';
 		} else {
 			$theme_folder = KNOT_THEMES_DIR . '/' . $theme;
 		}
