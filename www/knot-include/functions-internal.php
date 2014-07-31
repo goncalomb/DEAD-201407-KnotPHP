@@ -7,7 +7,7 @@ function knot_internal_utility_page($title, $html='', $http_code=200) {
 	http_response_code($http_code);
 	header('Content-Type: text/html; charset=utf-8', true);
 
-	echo '<!DOCTYPE html>';
+	echo "<!DOCTYPE html>\n";
 	echo '<html>';
 	echo '<head>';
 	echo '<meta charset="UTF-8">';

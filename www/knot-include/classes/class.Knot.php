@@ -6,6 +6,7 @@ final class Knot {
 	private static $_isAdmin = false;
 	private static $_adminId;
 	private static $_mysqliLink = null;
+	private static $_object = null;
 
 	private static function _getAdminId() {
 		if (self::$_adminId === null) {
@@ -74,8 +75,29 @@ final class Knot {
 				$escaped_name = self::$_mysqliLink->real_escape_string($db_config['name']);
 				self::$_mysqliLink->query("CREATE DATABASE `$escaped_name` CHARSET=utf8");
 			}
+			if (!file_exists(KNOT_TMP_DIR . '/FLAG_DB_CREATED')) {
+				knot_require_file('knot-include/db-create.php');
+				touch(KNOT_TMP_DIR . '/FLAG_DB_CREATED');
+			}
 		}
 		return self::$_mysqliLink;
+	}
+
+	public static function internal_handleRequest() {
+		self::$_object = Page::getByUrl(KNOT_REQUEST_URI);
+		if (self::$_object) {
+			self::_serveObject();
+		}
+	}
+
+	private static function _serveObject() {
+		KnotPage::start();
+		knot_require_file(KnotPage::themeFolder() . '/template-' . get_class(self::$_object) . '.php');
+		exit();
+	}
+
+	public static function getObject() {
+		return self::$_object;
 	}
 
 	private function __construct() { }

@@ -3,6 +3,7 @@
 final class KnotPage {
 
 	private static $_page;
+	private static $_themeFolder;
 	private static $_state;
 	private static $_zones = array();
 	private static $_replaceChars = array("\t", "\r", "\n");
@@ -15,22 +16,21 @@ final class KnotPage {
 		if ($theme === true) {
 			$theme = (string) Knot::config('theme', 'default');
 		}
-		$theme_folder = null;
 		if (empty($theme)) {
 			$theme = null;
 		} else if ($theme == 'default') {
-			$theme_folder = KNOT_INCLUDE_DIR . '/defaults/theme';
+			self::$_themeFolder = KNOT_INCLUDE_DIR . '/defaults/theme';
 		} else if ($theme == 'default-admin') {
-			$theme_folder = KNOT_INCLUDE_DIR . '/defaults/theme-admin';
+			self::$_themeFolder = KNOT_INCLUDE_DIR . '/defaults/theme-admin';
 		} else {
-			$theme_folder = KNOT_THEMES_DIR . '/' . $theme;
+			self::$_themeFolder = KNOT_THEMES_DIR . '/' . $theme;
 		}
 
 		ob_start();
 		self::$_page = new HtmlPage();
 		self::$_zones['head'] = self::$_page->head();
 		self::$_zones['body'] = self::$_page->body();
-		knot_require_file("$theme_folder/theme.php");
+		knot_require_file(self::$_themeFolder . '/theme.php');
 		self::append('body', ob_get_clean());
 		ob_start();
 
@@ -38,6 +38,10 @@ final class KnotPage {
 
 		register_shutdown_function(array(__CLASS__, 'end'));
 		return self::$_page;
+	}
+
+	public static function themeFolder() {
+		return self::$_themeFolder;
 	}
 
 	public static function zone($name, $element=null) {

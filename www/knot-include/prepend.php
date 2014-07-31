@@ -39,7 +39,8 @@ spl_autoload_register(function($class_name) {
 });
 
 require 'knot-include/functions.php';
-require 'knot-include/functions_internal.php';
+require 'knot-include/functions-internal.php';
+require 'knot-include/functions-id.php';
 
 knot_forbidden_path(KNOT_INCLUDE_DIR);
 knot_forbidden_path(KNOT_CONTENT_DIR);

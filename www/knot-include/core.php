@@ -10,7 +10,7 @@ if (!defined('KNOT_VERSION')) {
 	$knot_content_dir = $knot_dir . '/knot-content';
 
 	require $knot_include_dir . '/functions.php';
-	require $knot_include_dir . '/functions_internal.php';
+	require $knot_include_dir . '/functions-internal.php';
 
 	$data = file_get_contents($knot_include_dir . '/defaults/default.htaccess');
 	file_put_contents($knot_dir . '/.htaccess', str_replace('{KNOT_ROOT_DIR}', $knot_dir, $data));
@@ -42,7 +42,15 @@ if (KNOT_REQUEST_URI == '/divide-by-zero') {
 	1/0;
 }
 
-// CMS code goes here.
+$new_uri = rtrim(KNOT_REQUEST_URI, '/');
+if ($new_uri && $new_uri != KNOT_REQUEST_URI) {
+	header_remove();
+	header('Location: ' . $new_uri . KNOT_REQUEST_QUERY, true, 301);
+	exit();
+}
+unset($new_uri);
+
+Knot::internal_handleRequest();
 
 if (KNOT_REQUEST_URI != '' && KNOT_REQUEST_URI != '/' && KNOT_REQUEST_URI != '/index.php') {
 	KnotErrorHandling::httpError(404);
