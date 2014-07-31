@@ -5,6 +5,14 @@ KnotPage::stylesheetFile('//cdn.jsdelivr.net/fontawesome/4.1.0/css/font-awesome.
 
 KnotPage::append('head', '<style>.navbar-right { font-weight: bold; } #main > *:first-child { margin-top: 0; }</style>');
 
+$nav_bar_link = function($href, $html) {
+	echo '<li';
+	if ($href == KNOT_REQUEST_URI) {
+		echo ' class="active"';
+	}
+	echo '><a href="', $href, '">', $html, '</a></li>';
+}
+
 ?>
 
 <nav class="navbar navbar-default" role="navigation">
@@ -14,6 +22,8 @@ KnotPage::append('head', '<style>.navbar-right { font-weight: bold; } #main > *:
 		</div>
 		<?php if (Knot::isAdmin()) { ?>
 		<ul class="nav navbar-nav">
+			<?php $nav_bar_link('/knot-admin/pages.php', '<i class="fa fa-file-text-o"></i> Pages'); ?>
+			<?php $nav_bar_link('/knot-admin/run-php.php', '<i class="fa fa-code"></i> Run PHP'); ?>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			<li><a href="/knot-admin/?logout"><i class="fa fa-sign-out"></i> Logout</a></li>
