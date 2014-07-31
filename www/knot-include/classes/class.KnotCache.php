@@ -2,6 +2,9 @@
 
 final class KnotCache {
 
+	private static $_hits = 0;
+	private static $_misses = 0;
+
 	private static function _getFile($key, $ensure_dir=false) {
 		$sha1 = md5($key);
 		$dir = KNOT_CACHE_DIR . '/' . $sha1[0] . $sha1[1];
@@ -25,10 +28,11 @@ final class KnotCache {
 			$cache_data = unserialize(file_get_contents($file));
 			if ($cache_data['ttl'] == 0 || filemtime($file) > KNOT_TIME - $cache_data['ttl']) {
 				$data = $cache_data['data'];
+				self::$_hits++;
 				return true;
 			}
 		}
-		$data = null;
+		self::$_misses++;
 		return false;
 	}
 
@@ -41,6 +45,10 @@ final class KnotCache {
 
 	public static function clear() {
 		knot_unlink_recursive(KNOT_CACHE_DIR);
+	}
+
+	public static function stats() {
+		return array('hits' => self::$_hits, 'misses' => self::$_misses);
 	}
 
 }

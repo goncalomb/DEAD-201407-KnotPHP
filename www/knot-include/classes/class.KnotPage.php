@@ -130,7 +130,12 @@ final class KnotPage {
 			self::append('body', ob_get_clean());
 		}
 		self::$_page->output();
-		echo '<!-- ~', floor((microtime(true) - KNOT_MICROTIME)*100000)/100, "ms -->\n";
+		$cache_stats = KnotCache::stats();
+		echo '<!-- ';
+		echo $cache_stats['hits'], ' hits, ';
+		echo $cache_stats['misses'], ' misses, ';
+		echo '~', floor((microtime(true) - KNOT_MICROTIME)*100000)/100, 'ms';
+		echo " -->\n";
 		self::$_state = true;
 	}
 
