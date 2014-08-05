@@ -2,6 +2,8 @@
 
 abstract class Object {
 
+	private static $_loadedObjects = array();
+
 	private $_doCache = true;
 	private $_id;
 
@@ -9,12 +11,22 @@ abstract class Object {
 		list($id, $id_str) = knot_id_parse($id);
 		if ($id) {
 			$obj_type = get_called_class();
-			if (!$fresh && KnotCache::get('Knot-Object-' . $id_str, $obj) && is_a($obj, $obj_type)) {
+			if (!$fresh && isset(self::$_loadedObjects[$id]) && is_a(self::$_loadedObjects[$id], $obj_type)) {
+				return self::$_loadedObjects[$id];
+			} else if (!$fresh && KnotCache::get('Knot-Object-' . $id_str, $obj) && is_a($obj, $obj_type)) {
 				$obj->_doCache = false;
+				self::$_loadedObjects[$id] = $obj;
 				return $obj;
 			}
 			if ($obj_type == 'Object') {
-				$obj_type = self::getObjectType($id);
+				$stmt = Knot::getDatabase()->prepare('SELECT `Type` FROM `objects` WHERE `ObjectId`=?');
+				$stmt->bind_param('i', $id);
+				$stmt->execute();
+				$stmt->bind_result($obj_type);
+				if (!$stmt->fetch()) {
+					return false;
+				}
+				$stmt->close();
 			}
 			if ($obj_type !== null) {
 				return call_user_func(array($obj_type, '_getById'), $id);
@@ -33,6 +45,7 @@ abstract class Object {
 		$type = get_called_class();
 		$stmt->bind_param('is', $this->_id, $type);
 		$stmt->execute();
+		self::$_loadedObjects[$this->_id] = $this;
 	}
 
 	public function id($base62=false) {
@@ -43,6 +56,10 @@ abstract class Object {
 
 	public final function shortUrl() {
 		return '/o/' . $this->id(true);
+	}
+
+	protected final function cache() {
+		$this->_doCache = true;
 	}
 
 	public final function __destruct() {

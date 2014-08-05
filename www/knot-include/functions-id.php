@@ -76,4 +76,15 @@ function knot_id_random($full=false) {
 	return $id;
 }
 
+function knot_id_random_unique($full=false) {
+	$stmt = Knot::getDatabase()->prepare('SELECT `ObjectId` FROM `objects` WHERE `ObjectId`=?');
+	$stmt->bind_param('i', $id);
+	do {
+		$id = knot_id_random();
+		$stmt->execute();
+		$stmt->store_result();
+	} while ($stmt->num_rows > 0);
+	return $id;
+}
+
 ?>

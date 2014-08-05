@@ -15,7 +15,8 @@ $link->query("CREATE TABLE IF NOT EXISTS `pages` (
   `Slug` varchar(255) NOT NULL,
   `Order` int UNSIGNED NOT NULL,
   `Title` varchar(255) NOT NULL,
-  `Content` text NOT NULL
+  `Content` text NOT NULL,
+  PRIMARY KEY (`PageId`)
 ) ENGINE=InnoDB");
 
 ?>
