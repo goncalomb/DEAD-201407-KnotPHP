@@ -64,23 +64,20 @@ final class Knot {
 	public static function getDatabase() {
 		if (!self::$_mysqliLink) {
 			mysqli_report(MYSQLI_REPORT_ERROR);
-			$db_config = self::config('database');
-			self::$_mysqliLink = new mysqli(
-				'p:' . $db_config['host'],
-				$db_config['username'],
-				$db_config['password']
-			);
-			self::$_mysqliLink->set_charset('utf8');
-			if (!@self::$_mysqliLink->select_db($db_config['name'])) {
-				$escaped_name = self::$_mysqliLink->real_escape_string($db_config['name']);
-				self::$_mysqliLink->query("CREATE DATABASE `$escaped_name` CHARSET=utf8");
-			}
+			self::$_mysqliLink = new mysqli_ex(self::config('database'));
 			if (!file_exists(KNOT_TMP_DIR . '/FLAG_DB_CREATED')) {
 				knot_require_file('knot-include/db-create.php');
 				touch(KNOT_TMP_DIR . '/FLAG_DB_CREATED');
 			}
 		}
 		return self::$_mysqliLink;
+	}
+
+	public static function queryCount() {
+		if (self::$_mysqliLink) {
+			return self::$_mysqliLink->query_count();
+		}
+		return 0;
 	}
 
 	public static function internal_handleRequest() {

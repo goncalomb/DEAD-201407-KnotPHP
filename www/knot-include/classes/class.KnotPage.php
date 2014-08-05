@@ -134,6 +134,7 @@ final class KnotPage {
 		echo '<!-- ';
 		echo $cache_stats['hits'], ' hits, ';
 		echo $cache_stats['misses'], ' misses, ';
+		echo Knot::queryCount(), ' queries, ';
 		echo '~', floor((microtime(true) - KNOT_MICROTIME)*100000)/100, 'ms';
 		echo " -->\n";
 		self::$_state = true;
