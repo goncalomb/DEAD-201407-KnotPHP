@@ -18,38 +18,35 @@ KnotPage::title('Pages - Knot Admin');
 
 echo '<h2>Pages</h2>';
 
-$page = null;
+$index = Page::getById(1);
+
 $pages = array();
-if (!empty($_GET['id'])) {
-	$page = Page::getById((int) $_GET['id']);
-	if ($page) {
-		$pages = $page->childs();
-	} else {
-		echo '<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> Page not found!</div>';
-		exit();
-	}
+$page = (empty($_GET['id']) ? $index : Page::getById((int) $_GET['id']));
+if ($page) {
+	$pages = $page->childs();
 } else {
-	$pages = Page::getChildsOf(0);
+	echo '<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> Page not found!</div>';
+	exit();
 }
 
 echo '<ol class="breadcrumb">';
-if ($page) {
-	echo '<li class="active"><a href="pages.php"><em>Index</em></a></li>';
-	$html_buffer = array();
-	$parent = $page;
-	while ($parent = $parent->parent()) {
-		$html_buffer[] = '<li><a href="pages.php?id=' . $parent->id() . '">' . htmlentities($parent->title()) . '</a></li>';
-	}
-	foreach (array_reverse($html_buffer) as $html) {
-		echo $html;
-	}
-	echo '<li>' . htmlentities($page->title()) . '</li>';
-} else {
-	echo '<li class="active"><em>Index</em></li>';
+$html_buffer = array();
+$parent = $page;
+while ($parent = $parent->parent()) {
+	$html_buffer[] = '<li><a href="pages.php?id=' . $parent->id() . '">' . htmlentities($parent->title()) . '</a></li>';
 }
+foreach (array_reverse($html_buffer) as $html) {
+	echo $html;
+}
+echo '<li>' . htmlentities($page->title()) . '</li>';
 echo '</ol>';
 
-echo '<p><a class="btn btn-default" href="edit.php?create=Page&id=', ($page ? $page->id() : 0), '"><i class="fa fa-asterisk"></i> New Page</a></p>'
+echo '<p>';
+if ($page->id() == 1) {
+	echo '<a class="btn btn-default" href="edit.php?id=1"><i class="fa fa-pencil"></i> Edit Index (', htmlentities($page->title()), ')</a> ';
+}
+echo '<a class="btn btn-default" href="edit.php?create=Page&id=', ($page ? $page->id() : 1), '"><i class="fa fa-asterisk"></i> New Page</a>';
+echo '</p>';
 
 ?>
 

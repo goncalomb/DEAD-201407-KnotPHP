@@ -45,7 +45,7 @@ class Page extends Object {
 			if (isset($ref[$part])) {
 				$ref = &$ref[$part];
 			} else {
-				$page = self::_getBySlug((isset($ref[null]) ? $ref[null] : 0), $part);
+				$page = self::_getBySlug((isset($ref[null]) ? $ref[null] : 1), $part);
 				if ($page) {
 					$ref[$part][null] = $page->id();
 					$ref = &$ref[$part];
@@ -139,7 +139,7 @@ class Page extends Object {
 
 	public function url() {
 		$parent = $this->parent();
-		return ($parent ? $parent->url() : '') . '/' . $this->_slug;
+		return ($parent && $parent->id() != 1 ? $parent->url() : '') . '/' . $this->_slug;
 	}
 
 	public function childs() {

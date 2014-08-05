@@ -2,7 +2,7 @@
 
 $page = Knot::getObject();
 
-echo '<h1>', $page->title(), '</h1>';
+KnotPage::title($page->title());
 
 echo '<article>';
 eval('?>' . $page->content());

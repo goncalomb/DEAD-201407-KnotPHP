@@ -80,8 +80,14 @@ final class Knot {
 		return 0;
 	}
 
-	public static function internal_handleRequest() {
-		self::$_object = Page::getByUrl(KNOT_REQUEST_URI);
+	public static function internal_handleRequest($serve_index=true) {
+		if (KNOT_REQUEST_URI == '/') {
+			if ($serve_index) {
+				self::$_object = Page::getById(1);
+			}
+		} else {
+			self::$_object = Page::getByUrl(KNOT_REQUEST_URI);
+		}
 		if (self::$_object) {
 			self::_serveObject();
 		}

@@ -50,9 +50,12 @@ if ($new_uri && $new_uri != KNOT_REQUEST_URI) {
 }
 unset($new_uri);
 
-Knot::internal_handleRequest();
+if (!defined('KNOT_CUSTOM_INDEX')) {
+	define('KNOT_CUSTOM_INDEX', false);
+}
 
-if (KNOT_REQUEST_URI != '' && KNOT_REQUEST_URI != '/' && KNOT_REQUEST_URI != '/index.php') {
+Knot::internal_handleRequest(!KNOT_CUSTOM_INDEX);
+if (!KNOT_CUSTOM_INDEX) {
 	KnotErrorHandling::httpError(404);
 }
 

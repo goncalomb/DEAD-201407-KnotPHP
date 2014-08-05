@@ -19,4 +19,16 @@ $link->query("CREATE TABLE IF NOT EXISTS `pages` (
   PRIMARY KEY (`PageId`)
 ) ENGINE=InnoDB");
 
+$link->query("INSERT IGNORE INTO `objects` (
+  `ObjectId`, `Type`
+) VALUES (
+  1, 'Page'
+)");
+
+$link->query("INSERT IGNORE INTO `pages` (
+  `PageId`, `ParentId`, `Date`, `Slug`, `Order`, `Title`, `Content`
+) VALUES (
+  1, 0, FROM_UNIXTIME(0), '(index)', 0, 'Index', '<p>It works!</p>'
+)");
+
 ?>
