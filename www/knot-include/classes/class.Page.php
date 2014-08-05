@@ -88,6 +88,7 @@ class Page extends Object {
 			'Content' => '',
 		));
 		$page->save();
+		KnotCache::removeByPrefix('Knot-Object-');
 		return $page;
 	}
 
@@ -176,6 +177,7 @@ class Page extends Object {
 		$id = $this->id();
 		$stmt->bind_param('i', $id);
 		$stmt->execute();
+		KnotCache::removeByPrefix('Knot-Object-');
 	}
 
 }

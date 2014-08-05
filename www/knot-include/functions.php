@@ -22,6 +22,10 @@ function knot_random_id($length=20) {
 	return bin2hex(openssl_random_pseudo_bytes($length));
 }
 
+function knot_starts_with($string, $prefix) {
+	return (strncmp($string, $prefix, strlen($prefix)) === 0);
+}
+
 function knot_unlink_recursive($path) {
 	if (is_dir($path)) {
 		$handle = opendir($path);
