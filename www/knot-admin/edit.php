@@ -20,7 +20,7 @@ KnotPage::title('Edit - Knot Admin');
 $object = Object::getById($id);
 if (!$object) {
 	echo '<h2>Edit</h2>';
-	echo '<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> Object not found!</div>';
+	knot_html_bootstrap_alert('Object not found!');
 	exit();
 }
 
@@ -38,6 +38,7 @@ if ($object && isset($_POST['submit'])) {
 		$object->content($_POST['content']);
 	}
 	$object->save();
+	knot_html_bootstrap_alert(get_class($object) . ' saved.', 'success', true);
 }
 
 $slug = $title = $content = '';

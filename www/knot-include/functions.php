@@ -30,6 +30,13 @@ function knot_html_entities($string) {
 	return str_replace(array("\t", "\r", "\n"), array('&#09;', '&#13;', '&#10;'), htmlentities($string));
 }
 
+function knot_is_text_file($path) {
+	$finfo = finfo_open(FILEINFO_MIME);
+	$result = (substr(finfo_file($finfo, $path), 0, 5) == 'text/');
+	finfo_close($finfo);
+	return $result;
+}
+
 function knot_unlink_recursive($path) {
 	if (is_dir($path)) {
 		$handle = opendir($path);

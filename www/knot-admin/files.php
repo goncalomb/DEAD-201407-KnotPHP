@@ -17,13 +17,13 @@ if ($path && is_dir($path)) {
 	$path_dir = dirname($path);
 } else {
 	echo '<h2>Files</h2>';
-	echo '<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> Path not found!</div>';
+	knot_html_bootstrap_alert('Path not found!');
 	exit();
 }
 
 if (!knot_starts_with($path_dir, $_SERVER['DOCUMENT_ROOT'])) {
 	echo '<h2>Files</h2>';
-	echo '<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> Cannot leave website root!</div>';
+	knot_html_bootstrap_alert('Cannot leave website root!');
 	exit();
 }
 
@@ -66,14 +66,23 @@ echo '</div>';
 if (is_file($path)) {
 	echo '<div class="col-sm-9">';
 	echo '<h4>Edit File <small>', htmlentities(basename($path)), '</small></h4>';
-	echo '<form method="POST">';
-	echo '<div class="form-group">';
-	echo '<textarea id="content" class="form-control" style="height: 430px; resize: vertical;" name="data">';
-	echo knot_html_entities(file_get_contents($path));
-	echo '</textarea>';
-	echo '</div>';
-	echo '<button type="submit" class="btn btn-default">Save</button>';
-	echo '</form>';
+	if (isset($_POST['data'])) {
+		knot_html_bootstrap_alert('File saved.', 'success', true);
+	}
+	if (filesize($path) > 512*1024) {
+		knot_html_bootstrap_alert('Cannot edit files larger than 512KB!');
+	} else if (!knot_is_text_file($path)) {
+		knot_html_bootstrap_alert('Not a text file!');
+	} else {
+		echo '<form method="POST">';
+		echo '<div class="form-group">';
+		echo '<textarea id="content" class="form-control" style="height: 430px; resize: vertical;" name="data">';
+		echo knot_html_entities(file_get_contents($path));
+		echo '</textarea>';
+		echo '</div>';
+		echo '<button type="submit" class="btn btn-default">Save</button>';
+		echo '</form>';
+	}
 	echo '</div>';
 }
 

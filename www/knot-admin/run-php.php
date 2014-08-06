@@ -7,12 +7,8 @@ if (!Knot::isAdmin()) {
 KnotPage::start('default-admin');
 KnotPage::title('Run PHP - Knot Admin');
 
-?>
-
-<h2>Run PHP</h2>
-<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> <strong>This will run any PHP code!</strong> Use with care.</div>
-
-<?php
+echo '<h2>Run PHP</h2>';
+knot_html_bootstrap_alert('<strong>This will run any PHP code!</strong> Use with care.');
 
 $code = (isset($_POST['code']) ? $_POST['code'] : '');
 if ($code) {
