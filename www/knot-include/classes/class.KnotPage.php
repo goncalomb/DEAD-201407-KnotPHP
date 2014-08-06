@@ -62,6 +62,13 @@ final class KnotPage {
 		}
 	}
 
+	public static function appendRaw($zone_name) {
+		if (self::$_page && isset(self::$_zones[$zone_name])) {
+			self::flushBuffer();
+			call_user_func_array(array(self::$_zones[$zone_name], 'append'), array_slice(func_get_args(), 1));
+		}
+	}
+
 	public static function append($zone_name) {
 		if (self::$_page && isset(self::$_zones[$zone_name])) {
 			self::flushBuffer();

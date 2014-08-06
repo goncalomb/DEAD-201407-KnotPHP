@@ -77,7 +77,7 @@ if (is_file($path)) {
 		echo '<form method="POST">';
 		echo '<div class="form-group">';
 		echo '<textarea id="content" class="form-control" style="height: 430px; resize: vertical;" name="data">';
-		echo knot_html_entities(file_get_contents($path));
+		KnotPage::appendRaw('main', "\n", htmlentities(file_get_contents($path)));
 		echo '</textarea>';
 		echo '</div>';
 		echo '<button type="submit" class="btn btn-default">Save</button>';
