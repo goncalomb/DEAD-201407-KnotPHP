@@ -28,7 +28,7 @@ if ($code) {
 <form method="POST">
 	<div class="form-group">
 		<textarea class="form-control" style="height: 300px; resize: vertical;" name="code" spellcheck="false">
-		<?php KnotPage::replaceChars(false); echo $code; KnotPage::replaceChars(true);?>
+		<?php echo knot_html_entities($code); ?>
 		</textarea>
 	</div>
 	<button class="btn btn-primary" type="submit">Run PHP</button>

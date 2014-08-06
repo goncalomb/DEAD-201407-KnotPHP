@@ -26,6 +26,10 @@ function knot_starts_with($string, $prefix) {
 	return (strncmp($string, $prefix, strlen($prefix)) === 0);
 }
 
+function knot_html_entities($string) {
+	return str_replace(array("\t", "\r", "\n"), array('&#09;', '&#13;', '&#10;'), htmlentities($string));
+}
+
 function knot_unlink_recursive($path) {
 	if (is_dir($path)) {
 		$handle = opendir($path);

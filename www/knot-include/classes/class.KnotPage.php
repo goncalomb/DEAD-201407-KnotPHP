@@ -48,6 +48,7 @@ final class KnotPage {
 		if ($element && self::$_page && self::$_state === null && $name != 'head' && $name != 'body') {
 			self::$_zones[$name] = $element;
 		}
+		return (isset(self::$_zones[$name]) ? self::$_zones[$name] : null);
 	}
 
 	public static function replaceChars($chars) {

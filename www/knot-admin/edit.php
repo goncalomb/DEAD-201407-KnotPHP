@@ -65,7 +65,7 @@ if ($object) {
 	<div class="form-group">
 		<label class="col-sm-1 control-label" for="content">Content</label>
 		<div class="col-sm-11">
-			<textarea id="content" class="form-control" style="height: 200px; resize: vertical;" name="content"><?php echo htmlentities($content); ?></textarea>
+			<textarea id="content" class="form-control" style="height: 200px; resize: vertical;" name="content"><?php echo knot_html_entities($content); ?></textarea>
 		</div>
 	</div>
 	<div class="form-group">
