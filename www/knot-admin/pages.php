@@ -1,5 +1,9 @@
 <?php
 
+if (!Knot::isAdmin()) {
+	KnotErrorHandling::httpError(403);
+}
+
 if (!empty($_GET['delete-id'])) {
 	$page = Page::getById((int) $_GET['delete-id']);
 	if ($page) {
@@ -7,10 +11,6 @@ if (!empty($_GET['delete-id'])) {
 	}
 	header('Location: ' . KNOT_REQUEST_URI);
 	exit();
-}
-
-if (!Knot::isAdmin()) {
-	KnotErrorHandling::httpError(403);
 }
 
 KnotPage::start('default-admin');
