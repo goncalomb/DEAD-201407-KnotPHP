@@ -95,7 +95,7 @@ final class Knot {
 
 	private static function _serveObject() {
 		KnotPage::start();
-		knot_require_file(KnotPage::themeFolder() . '/template-' . get_class(self::$_object) . '.php');
+		KnotPage::theme()->includeFile('template-' . get_class(self::$_object) . '.php', true);
 		exit();
 	}
 

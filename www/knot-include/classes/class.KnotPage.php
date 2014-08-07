@@ -3,45 +3,47 @@
 final class KnotPage {
 
 	private static $_page;
-	private static $_themeFolder;
+	private static $_theme;
 	private static $_state;
 	private static $_zones = array();
 	private static $_replaceChars = array("\t", "\r", "\n");
 
-	public static function start($theme=true) {
+	public static function theme($name=null) {
+		if (self::$_page) {
+			return self::$_theme;
+		}
+		if ($name === true || ($name === null && self::$_theme === null)) {
+			self::$_theme = KnotTheme::get((string) Knot::config('theme'), true);
+		} else if (!$name) {
+			self::$_theme = false;
+		} else {
+			self::$_theme = KnotTheme::get($name, true);
+		}
+		return self::$_theme;
+	}
+
+	public static function start($theme=null) {
 		if (self::$_page) {
 			return null;
 		}
-
-		if ($theme === true) {
-			$theme = (string) Knot::config('theme', 'default');
-		}
-		if (empty($theme)) {
-			$theme = null;
-		} else if ($theme == 'default') {
-			self::$_themeFolder = KNOT_INCLUDE_DIR . '/defaults/theme';
-		} else if ($theme == 'default-admin') {
-			self::$_themeFolder = KNOT_INCLUDE_DIR . '/defaults/theme-admin';
-		} else {
-			self::$_themeFolder = KNOT_THEMES_DIR . '/' . $theme;
+		if (self::$_theme === null || $theme !== null) {
+			self::theme($theme);
 		}
 
-		ob_start();
 		self::$_page = new HtmlPage();
 		self::$_zones['head'] = self::$_page->head();
 		self::$_zones['body'] = self::$_page->body();
-		knot_require_file(self::$_themeFolder . '/theme.php');
-		self::append('body', ob_get_clean());
+		if (self::$_theme) {
+			ob_start();
+			self::$_theme->includeFile('theme.php');
+			self::append('body', ob_get_clean());
+		}
 		ob_start();
 
 		self::$_state = false;
 
 		register_shutdown_function(array(__CLASS__, 'end'));
 		return self::$_page;
-	}
-
-	public static function themeFolder() {
-		return self::$_themeFolder;
 	}
 
 	public static function zone($name, $element=null) {
