@@ -29,6 +29,10 @@ class KnotTheme {
 	private function __construct($name, $folder) {
 		$this->_name = $name;
 		$this->_folder = $folder;
+		$public_folder = "{$this->_folder}/public";
+		if (is_dir($public_folder)) {
+			knot_forbidden_path($public_folder, true);
+		}
 	}
 
 	public function includeFile($file, $fallback_to_default=false) {
@@ -42,6 +46,14 @@ class KnotTheme {
 			user_error("Theme file not found ($path).", E_USER_ERROR);
 		}
 		return false;
+	}
+
+	public function publicUrl($file) {
+		if ($this->_name == 'default' || $this->_name == 'default-admin') {
+			$name = ($this->_name == 'default' ? 'theme' : 'theme-admin');
+			return "/knot-include/defaults/$name/public/$file";
+		}
+		return "/knot-content/themes/{$this->_name}/public/$file";
 	}
 
 }

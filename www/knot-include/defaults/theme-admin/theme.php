@@ -2,8 +2,7 @@
 
 KnotPage::stylesheetFile('//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css');
 KnotPage::stylesheetFile('//cdn.jsdelivr.net/fontawesome/4.1.0/css/font-awesome.min.css');
-
-KnotPage::append('head', '<style>body { overflow-y: scroll; } .navbar-right { font-weight: bold; } #main > *:first-child { margin-top: 0; }</style>');
+KnotPage::stylesheetFile(KnotPage::theme()->publicUrl('style.css'));
 
 $nav_bar_link = function($href, $html) {
 	echo '<li';

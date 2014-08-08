@@ -1,0 +1,11 @@
+body {
+	overflow-y: scroll;
+}
+
+.navbar-right {
+	font-weight: bold;
+}
+
+#main > *:first-child {
+	margin-top: 0;
+}

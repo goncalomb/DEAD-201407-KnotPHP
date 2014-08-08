@@ -8,9 +8,9 @@ function knot_ensure_path($path) {
 	}
 }
 
-function knot_forbidden_path($path) {
+function knot_forbidden_path($path, $allow=false) {
 	if (!file_exists($path . '/.htaccess')) {
-		file_put_contents($path . '/.htaccess', "Deny from all\n");
+		file_put_contents($path . '/.htaccess', ($allow ? "Allow from all\n" : "Deny from all\n"));
 	}
 }
 
