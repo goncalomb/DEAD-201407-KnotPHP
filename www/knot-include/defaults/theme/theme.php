@@ -1,6 +1,6 @@
 <?php
 
-KnotPage::stylesheetFile('//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css');
+KnotPage::stylesheetFile('bootstrap');
 
 echo '<div class="container">';
 

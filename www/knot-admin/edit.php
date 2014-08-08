@@ -24,7 +24,6 @@ if (!$object) {
 	exit();
 }
 
-KnotPage::scriptFile('//cdn.jsdelivr.net/tinymce/4.1.2/tinymce.min.js');
 echo '<h2>Edit <small>', get_class($object), ' (', $object->id(true), ')</small></h2>';
 
 if ($object && isset($_POST['submit'])) {
@@ -64,7 +63,10 @@ if ($object) {
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-sm-1 control-label" for="content">Content</label>
+		<label class="col-sm-1 control-label" for="content">
+			Content
+			<button class="btn btn-default btn-tinymce" type="button" title="Toggle editor"><i class="fa fa-bars fa-fw"></i></button>
+		</label>
 		<div class="col-sm-11">
 			<textarea id="content" class="form-control" style="height: 200px; resize: vertical;" name="content">
 			<?php KnotPage::appendRaw('main', "\n", htmlentities($content)); ?>
@@ -77,19 +79,3 @@ if ($object) {
 		</div>
 	</div>
 </form>
-
-<script>
-	tinymce.init({
-		plugins: "link image hr table code",
-		selector: "textarea",
-		content_css: "//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css",
-		element_format: "html",
-		browser_spellcheck : true,
-		protect: [ /<\?php.*?\?>/g ],
-		setup: function(editor) {
-			editor.on('PreInit', function(e) {
-				editor.iframeElement.contentDocument.querySelector("head link").remove();
-			});
-		}
-	});
-</script>

@@ -1,8 +1,13 @@
 <?php
 
-KnotPage::stylesheetFile('//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css');
-KnotPage::stylesheetFile('//cdn.jsdelivr.net/fontawesome/4.1.0/css/font-awesome.min.css');
-KnotPage::stylesheetFile(KnotPage::theme()->publicUrl('style.css'));
+KnotPage::stylesheetFile('bootstrap');
+KnotPage::stylesheetFile('fontawesome');
+KnotPage::scriptFile('jquery');
+KnotPage::scriptFile('tinymce');
+KnotPage::scriptFile('tinymce-jquery');
+$theme = KnotPage::theme();
+KnotPage::stylesheetFile($theme->publicUrl('style.css'));
+KnotPage::scriptFile($theme->publicUrl('script.js'), true);
 
 $nav_bar_link = function($href, $html) {
 	echo '<li';

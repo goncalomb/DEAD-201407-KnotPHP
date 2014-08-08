@@ -25,7 +25,7 @@ $page = (empty($_GET['id']) ? $index : Page::getById((int) $_GET['id']));
 if ($page) {
 	$pages = $page->childs();
 } else {
-	echo '<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> Page not found!</div>';
+	knot_html_bootstrap_alert('Page not found!');
 	exit();
 }
 

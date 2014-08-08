@@ -7,6 +7,15 @@ final class KnotPage {
 	private static $_state;
 	private static $_zones = array();
 	private static $_replaceChars = array("\t", "\r", "\n");
+	private static $_styles = array(
+		'bootstrap' => '//cdn.jsdelivr.net/bootstrap/3/css/bootstrap.min.css',
+		'fontawesome' => '//cdn.jsdelivr.net/fontawesome/4/css/font-awesome.min.css'
+	);
+	private static $_scripts = array(
+		'jquery' => '//cdn.jsdelivr.net/jquery/2/jquery.min.js',
+		'tinymce' => '//cdn.jsdelivr.net/tinymce/4/tinymce.min.js',
+		'tinymce-jquery' => '//cdn.jsdelivr.net/tinymce/4/jquery.tinymce.min.js'
+	);
 
 	public static function theme($name=null) {
 		if (self::$_page) {
@@ -105,13 +114,21 @@ final class KnotPage {
 
 	public static function stylesheetFile($href) {
 		if (self::$_page) {
-			self::$_page->stylesheetFile($href);
+			if (isset(self::$_styles[$href])) {
+				self::$_page->stylesheetFile(self::$_styles[$href]);
+			} else {
+				self::$_page->stylesheetFile($href);
+			}
 		}
 	}
 
 	public static function scriptFile($src, $end=false) {
 		if (self::$_page) {
-			self::$_page->scriptFile($src, $end);
+			if (isset(self::$_scripts[$src])) {
+				self::$_page->scriptFile(self::$_scripts[$src], $end);
+			} else {
+				self::$_page->scriptFile($src, $end);
+			}
 		}
 	}
 
